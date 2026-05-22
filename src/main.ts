@@ -17,10 +17,10 @@ app.post("/user", upload.single("file"), async (req, res) => {
   }
   const data = (await parseCSV(req.file.buffer)) as User[];
   // const users = await prisma.user.createMany({ data });
-  const job=mainQueue.add("create_user", { data });
+  const job = await mainQueue.add("create_user", { data });
   await redisClient.del("user:*");
 
-  return res.json({ message: "Successfullly parsed", data: job });
+  return res.json({ message: "Successfullly parsed", data: job.id });
 });
 
 app.get("/user", async (req, res) => {
@@ -57,7 +57,7 @@ app.get("/user", async (req, res) => {
     },
   });
 
-  await redisClient.set(redisKey, JSON.stringify(allUsers), {EX: 60});
+  await redisClient.set(redisKey, JSON.stringify(allUsers), { EX: 60 });
   return res.json({ message: "User fetched again", data: allUsers });
 });
 
