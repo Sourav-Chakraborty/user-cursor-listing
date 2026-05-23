@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/main.ts",
     "build": "npx prisma generate && tsc",
-    "start": "concurrently \"node dist/main.js\" \"node dist/workers/mainWorker.js\"",
+    "start": "concurrently \"node dist/src/main.js\" \"node dist/src/workers/mainWorker.js\"",
     "worker": "ts-node src/workers/mainWorker.ts"
   },
   "keywords": [],
