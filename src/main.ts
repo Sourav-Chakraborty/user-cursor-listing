@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import "dotenv/config";
 import express from "express";
 import { Prisma, User } from "./generated/prisma/client";
 import parseCSV from "./lib/csvParser";
@@ -7,7 +7,6 @@ import mainQueue from "./lib/mainQueue";
 import { prisma } from "./lib/prisma";
 import { connectRedis, redisClient } from "./lib/redisServer";
 
-dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
