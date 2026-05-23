@@ -1,4 +1,5 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config();
 import { Worker } from "bullmq";
 import connection from "../config/ioRedis";
 import { prisma } from "../lib/prisma";
@@ -6,7 +7,7 @@ import { prisma } from "../lib/prisma";
 const worker = new Worker("mainQueue", async (job) => {
     switch (job.name) {
         case 'create_user':
-            const {data} = job.data;
+            const { data } = job.data;
             const users = await prisma.user.createMany({ data });
             break;
         default:
