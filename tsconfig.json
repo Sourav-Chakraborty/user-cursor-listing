@@ -1,18 +1,24 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "rootDir": "./src",
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "rootDir": ".",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    // "types": [
+    //   "node"
+    // ]
   },
+  "include": [
+    "src",
+    "prisma.config.ts"
+  ],
   "exclude": [
     "node_modules",
     "dist",
     "prisma"
-  ],
-  "include": [
-    "src/**/*"
   ]
 }
