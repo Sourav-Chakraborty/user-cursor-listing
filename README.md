@@ -4,52 +4,9 @@ A high-performance, enterprise-grade Node.js service engineered for high-through
 
 ---
 
-## 🏗️ Architecture Design
+## Architecture Design
 
 The system employs a decoupled, event-driven architecture designed to optimize CPU-heavy operations (like CSV parsing and database writes) and cache-heavy operations (like paginated reads).
-
-```mermaid
-graph TD
-    Client[Client Browser / API Client]
-    
-    subgraph Express HTTP Layer
-        Express[Express App :3000]
-        Multer[Multer Memory Storage]
-        Parser[csv-parser Engine]
-    end
-    
-    subgraph Caching & Queuing (Redis)
-        RedisCache[(Redis Cache Client)]
-        BullQueue[(BullMQ mainQueue)]
-    end
-    
-    subgraph Background Processing
-        Worker[BullMQ mainWorker]
-    end
-    
-    subgraph Persistent Storage
-        Prisma[Prisma Client / Adapter]
-        MySQL[(MySQL / MariaDB)]
-    end
-
-    %% Flow lines
-    Client -->|POST /user CSV Upload| Express
-    Express --> Multer --> Parser
-    Parser -->|Asynchronous Queue Job| BullQueue
-    Express -.->|Invalidate 'user:*' cache| RedisCache
-    
-    Client -->|GET /user?limit=N&offset=C| Express
-    Express -->|1. Check Cache| RedisCache
-    RedisCache -->|Cache Hit: Return Data| Client
-    
-    Express -->|2. Cache Miss: Query Database| Prisma
-    Prisma --> MySQL
-    MySQL -->|Return Records| Express
-    Express -->|3. Write to Cache| RedisCache
-    
-    Worker -->|Process 'create_user' Job| BullQueue
-    Worker -->|Prisma: createMany| MySQL
-```
 
 ---
 
